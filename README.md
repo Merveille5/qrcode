@@ -1,52 +1,23 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1
--- https://www.phpmyadmin.net/
---
--- Hôte : 127.0.0.1:3306
--- Généré le : ven. 20 mars 2026 à 09:25
--- Version du serveur : 9.1.0
--- Version de PHP : 8.3.14
+DROP TABLE IF EXISTS fonction;
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+CREATE TABLE fonction (
+  id_fonction INT NOT NULL AUTO_INCREMENT,
+  libelle VARCHAR(50) NOT NULL,
+  PRIMARY KEY (id_fonction)
+);
 
- /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
- /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
- /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- /*!40101 SET NAMES utf8mb4 */;
-
---
--- Base de données : `gestion_presence`
---
-
--- --------------------------------------------------------
--- Table `fonction`
--- --------------------------------------------------------
-
-DROP TABLE IF EXISTS `fonction`;
-CREATE TABLE IF NOT EXISTS `fonction` (
-  `id_fonction` INT NOT NULL AUTO_INCREMENT,
-  `libelle` VARCHAR(50) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id_fonction`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-INSERT INTO `fonction` (`id_fonction`, `libelle`) VALUES
+INSERT INTO fonction (id_fonction, libelle) VALUES
 (1, 'Directeur'),
 (2, 'Agent'),
 (3, 'Stagiaire');
 
--- --------------------------------------------------------
--- Table `agent`
--- --------------------------------------------------------
-
 DROP TABLE IF EXISTS `agent`;
 CREATE TABLE IF NOT EXISTS `agent` (
   `matricule` INT NOT NULL AUTO_INCREMENT,
-  `nom` VARCHAR(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `postnom` VARCHAR(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `prenom` VARCHAR(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `sexe` ENUM('M','F') COLLATE utf8mb4_general_ci NOT NULL,
+  `nom` VARCHAR(50) NOT NULL,
+  `postnom` VARCHAR(50) NULL,
+  `prenom` VARCHAR(50) NULL,
+  `sexe` ENUM('M','F')  NOT NULL,
   `id_fonction` INT NOT NULL,
   `regime_prestation` INT NOT NULL,
   PRIMARY KEY (`matricule`),
@@ -73,25 +44,17 @@ END;
 $$
 DELIMITER ;
 
--- --------------------------------------------------------
--- Table `conge`
--- --------------------------------------------------------
-
 DROP TABLE IF EXISTS `conge`;
 CREATE TABLE IF NOT EXISTS `conge` (
   `id_conge` INT NOT NULL AUTO_INCREMENT,
   `matricule` INT NOT NULL,
-  `type_conge` ENUM('Maladie','Demenagement','Accouchement','Autre') COLLATE utf8mb4_general_ci NOT NULL,
+  `type_conge` ENUM('Maladie','Demenagement','Accouchement','Autre')  NOT NULL,
   `date_debut` DATE NOT NULL,
   `date_fin` DATE NOT NULL,
   PRIMARY KEY (`id_conge`),
   KEY `fk_conge_agent` (`matricule`),
   CONSTRAINT chk_conge_dates CHECK (date_fin >= date_debut)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
--- Table `jour_ouvert`
--- --------------------------------------------------------
 
 DROP TABLE IF EXISTS `jour_ouvert`;
 CREATE TABLE IF NOT EXISTS `jour_ouvert` (
@@ -100,10 +63,6 @@ CREATE TABLE IF NOT EXISTS `jour_ouvert` (
   `est_ouvert` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`id_jour`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
--- Table `statut`
--- --------------------------------------------------------
 
 DROP TABLE IF EXISTS `statut`;
 CREATE TABLE IF NOT EXISTS `statut` (
@@ -117,10 +76,6 @@ INSERT INTO `statut` (`id_statut`, `libelle`) VALUES
 (2, 'Absent'),
 (3, 'Retard'),
 (4, 'Malade');
-
--- --------------------------------------------------------
--- Table `presence`
--- --------------------------------------------------------
 
 DROP TABLE IF EXISTS `presence`;
 CREATE TABLE IF NOT EXISTS `presence` (
@@ -152,6 +107,4 @@ ALTER TABLE `presence`
 
 COMMIT;
 
- /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
- /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
- /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+ 
