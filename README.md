@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS fonction;
 
 CREATE TABLE fonction (
   id_fonction INT NOT NULL AUTO_INCREMENT,
@@ -13,13 +12,15 @@ INSERT INTO fonction (id_fonction, libelle) VALUES
 
 DROP TABLE IF EXISTS `agent`;
 CREATE TABLE IF NOT EXISTS `agent` (
-  `matricule` INT NOT NULL AUTO_INCREMENT,
+  `matricule` VARCHAR (50) NOT NULL,
   `nom` VARCHAR(50) NOT NULL,
   `postnom` VARCHAR(50) NULL,
   `prenom` VARCHAR(50) NULL,
   `sexe` ENUM('M','F')  NOT NULL,
   `id_fonction` INT NOT NULL,
   `regime_prestation` INT NOT NULL,
+   `carte_agent` varchar(100) NOT NULL,
+  `photo_agent` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`matricule`),
   KEY `fk_agent_fonction` (`id_fonction`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -91,9 +92,8 @@ CREATE TABLE IF NOT EXISTS `presence` (
   KEY `idx_presence_date` (`date_presence`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
+
 -- Contraintes
--- --------------------------------------------------------
 
 ALTER TABLE `agent`
   ADD CONSTRAINT `fk_agent_fonction` FOREIGN KEY (`id_fonction`) REFERENCES `fonction` (`id_fonction`) ON DELETE RESTRICT ON UPDATE CASCADE;
